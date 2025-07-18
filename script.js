@@ -503,7 +503,17 @@ function createRecipeCard(recipe) {
         </div>
     `;
     
-    card.addEventListener('click', () => showRecipeDetail(recipe));
+    card.addEventListener('click', () => {
+        // Close search modal first if it's open
+        const searchModal = document.getElementById('searchResultsModal');
+        if (searchModal && searchModal.style.display === 'block') {
+            closeSearchModal();
+            // Small delay to ensure search modal closes before showing recipe detail
+            setTimeout(() => showRecipeDetail(recipe), 100);
+        } else {
+            showRecipeDetail(recipe);
+        }
+    });
     
     return card;
 }
@@ -914,11 +924,19 @@ function setupEventListeners() {
         searchModalClose.addEventListener('click', closeSearchModal);
     }
     
-    // Setup ESC key to close search modal
+    // Setup ESC key to close modals (recipe modal first, then search modal)
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
+            const recipeModal = document.getElementById('recipeModal');
             const searchModal = document.getElementById('searchResultsModal');
-            if (searchModal && searchModal.style.display === 'block') {
+            
+            // Close recipe modal first if it's open
+            if (recipeModal && recipeModal.style.display === 'block') {
+                recipeModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            // If recipe modal is not open, close search modal
+            else if (searchModal && searchModal.style.display === 'block') {
                 closeSearchModal();
             }
         }
@@ -928,12 +946,24 @@ function setupEventListeners() {
     closeModal.addEventListener('click', () => {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
+        
+        // If search modal is still open, keep body overflow hidden
+        const searchModal = document.getElementById('searchResultsModal');
+        if (searchModal && searchModal.style.display === 'block') {
+            document.body.style.overflow = 'hidden';
+        }
     });
     
     window.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
+            
+            // If search modal is still open, keep body overflow hidden
+            const searchModal = document.getElementById('searchResultsModal');
+            if (searchModal && searchModal.style.display === 'block') {
+                document.body.style.overflow = 'hidden';
+            }
         }
     });
     

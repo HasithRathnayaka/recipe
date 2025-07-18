@@ -607,7 +607,16 @@ h2::after {
     animation: slideIn 0.3s ease;
 }
 
+/* Recipe detail modal - higher z-index than search modal */
+#recipeModal {
+    z-index: 3000;
+}
+
 /* Search Results Modal */
+.search-modal {
+    z-index: 2500;
+}
+
 .search-modal .search-modal-content {
     background-color: white;
     margin: 3% auto;
@@ -745,6 +754,42 @@ h2::after {
         /* Prevent text selection on touch */
         -webkit-user-select: none;
         user-select: none;
+    }
+    
+    .search-results-grid .recipe-card:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
+    }
+}
+
+/* Enhanced animations for modal transitions */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.modal.closing {
+    animation: fadeOut 0.2s ease;
+}
+
+/* Recipe modal enhancement */
+#recipeModal .modal-content {
+    animation: slideIn 0.4s ease;
+    transform-origin: center;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(30px) scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
     }
 }
 
