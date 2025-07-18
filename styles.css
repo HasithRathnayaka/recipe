@@ -1692,3 +1692,54 @@ html {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* Recipe grid section enhancements */
+.recipe-grid-section {
+    transition: all 0.3s ease;
+}
+
+.recipe-grid-section .section-subtitle {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 2rem;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.recipe-grid-section .section-subtitle.search-results {
+    color: #e74c3c;
+}
+
+/* Smooth scroll offset for fixed navbar */
+section[id] {
+    scroll-margin-top: 120px;
+}
+
+/* Enhanced recipe grid animations */
+.recipe-grid {
+    transition: opacity 0.3s ease;
+}
+
+.recipe-grid.loading {
+    opacity: 0.7;
+}
+
+.recipe-card {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.recipe-card:nth-child(1) { animation-delay: 0.1s; }
+.recipe-card:nth-child(2) { animation-delay: 0.2s; }
+.recipe-card:nth-child(3) { animation-delay: 0.3s; }
+.recipe-card:nth-child(4) { animation-delay: 0.4s; }
+.recipe-card:nth-child(5) { animation-delay: 0.5s; }
+.recipe-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

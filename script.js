@@ -565,8 +565,18 @@ function searchRecipes(query) {
     
     displayRecipes(filteredRecipes);
     
-    // Scroll to recipes section
-    document.getElementById('recipes').scrollIntoView({ behavior: 'smooth' });
+    // Update subtitle to show search results
+    const subtitle = document.querySelector('.section-subtitle');
+    if (subtitle) {
+        if (query) {
+            subtitle.textContent = `Search Results for "${query}" (${filteredRecipes.length} found)`;
+        } else {
+            subtitle.textContent = 'All Recipes';
+        }
+    }
+    
+    // Scroll to recipes section with offset for navbar
+    setTimeout(() => scrollToSection('recipes'), 100);
 }
 
 // Filter by category
@@ -577,8 +587,31 @@ function filterByCategory(category) {
     
     displayRecipes(filteredRecipes);
     
-    // Scroll to recipes section
-    document.getElementById('recipes').scrollIntoView({ behavior: 'smooth' });
+    // Update subtitle to show category filter
+    const subtitle = document.querySelector('.section-subtitle');
+    if (subtitle) {
+        const categoryName = category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ');
+        subtitle.textContent = `${categoryName} Recipes (${filteredRecipes.length} found)`;
+    }
+    
+    // Scroll to recipes section with offset for navbar
+    setTimeout(() => scrollToSection('recipes'), 100);
+}
+
+// Custom scroll function to handle fixed navbar
+function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    const navbar = document.querySelector('.navbar');
+    
+    if (section && navbar) {
+        const navbarHeight = navbar.offsetHeight;
+        const sectionTop = section.offsetTop - navbarHeight - 30; // Extra 30px padding for better visibility
+        
+        window.scrollTo({
+            top: sectionTop,
+            behavior: 'smooth'
+        });
+    }
 }
 
 // Slideshow functionality
@@ -821,6 +854,11 @@ function setupEventListeners() {
     searchInput.addEventListener('input', (e) => {
         if (e.target.value === '') {
             displayRecipes(recipes);
+            // Reset subtitle
+            const subtitle = document.querySelector('.section-subtitle');
+            if (subtitle) {
+                subtitle.textContent = 'All Recipes';
+            }
         }
     });
     
@@ -899,12 +937,9 @@ function setupSmoothScrolling() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+            const targetId = this.getAttribute('href').substring(1);
+            if (targetId) {
+                scrollToSection(targetId);
             }
         });
     });
@@ -958,5 +993,6 @@ window.recipeApp = {
     displayRecipes,
     searchRecipes,
     filterByCategory,
+    scrollToSection,
     addRecipe
 };
