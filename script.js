@@ -554,7 +554,7 @@ function showRecipeDetail(recipe) {
     document.body.style.overflow = 'hidden';
 }
 
-// Search functionality
+// Search functionality - now with popup modal
 function searchRecipes(query) {
     const filteredRecipes = recipes.filter(recipe => 
         recipe.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -563,52 +563,103 @@ function searchRecipes(query) {
         recipe.category.toLowerCase().includes(query.toLowerCase())
     );
     
-    displayRecipes(filteredRecipes);
-    
-    // Update subtitle to show search results
-    const subtitle = document.querySelector('.section-subtitle');
-    if (subtitle) {
-        if (query) {
-            subtitle.textContent = `Search Results for "${query}" (${filteredRecipes.length} found)`;
-        } else {
-            subtitle.textContent = 'All Recipes';
-        }
-    }
-    
-    // Scroll to recipes section with offset for navbar
-    setTimeout(() => scrollToSection('recipes'), 100);
+    // Show results in popup modal
+    showSearchResultsModal(filteredRecipes, query);
 }
 
-// Filter by category
+// Filter by category - now with popup modal
 function filterByCategory(category) {
     const filteredRecipes = recipes.filter(recipe => 
         recipe.category === category
     );
     
-    displayRecipes(filteredRecipes);
-    
-    // Update subtitle to show category filter
-    const subtitle = document.querySelector('.section-subtitle');
-    if (subtitle) {
-        const categoryName = category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ');
-        subtitle.textContent = `${categoryName} Recipes (${filteredRecipes.length} found)`;
-    }
-    
-    // Scroll to recipes section with offset for navbar
-    setTimeout(() => scrollToSection('recipes'), 100);
+    const categoryName = category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ');
+    showSearchResultsModal(filteredRecipes, null, categoryName);
 }
 
-// Custom scroll function to handle fixed navbar
+// Show search results in a centered popup modal
+function showSearchResultsModal(recipesToShow, searchQuery = null, categoryName = null) {
+    const searchModal = document.getElementById('searchResultsModal');
+    const searchModalTitle = document.getElementById('searchModalTitle');
+    const searchResultsGrid = document.getElementById('searchResultsGrid');
+    
+    // Set modal title
+    if (searchQuery) {
+        searchModalTitle.textContent = `Search Results for "${searchQuery}"`;
+    } else if (categoryName) {
+        searchModalTitle.textContent = `${categoryName} Recipes`;
+    } else {
+        searchModalTitle.textContent = 'Recipe Results';
+    }
+    
+    // Clear previous results
+    searchResultsGrid.innerHTML = '';
+    
+    // Check if no results
+    if (recipesToShow.length === 0) {
+        searchResultsGrid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                <i class="fas fa-search" style="font-size: 3rem; color: #e74c3c; margin-bottom: 1rem;"></i>
+                <h3 style="color: #666; margin-bottom: 0.5rem;">No recipes found</h3>
+                <p style="color: #999;">Try a different search term or browse categories</p>
+            </div>
+        `;
+    } else {
+        // Add results count
+        const countInfo = document.createElement('div');
+        countInfo.style.cssText = 'grid-column: 1/-1; text-align: center; margin-bottom: 1rem; color: #666; font-weight: 500;';
+        countInfo.textContent = `Found ${recipesToShow.length} recipe${recipesToShow.length !== 1 ? 's' : ''}`;
+        searchResultsGrid.appendChild(countInfo);
+        
+        // Add recipe cards
+        recipesToShow.forEach(recipe => {
+            const recipeCard = createRecipeCard(recipe);
+            recipeCard.style.margin = '0'; // Remove any margins in modal
+            searchResultsGrid.appendChild(recipeCard);
+        });
+    }
+    
+    // Show modal
+    searchModal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    
+    // Add click outside to close
+    setTimeout(() => {
+        searchModal.addEventListener('click', (e) => {
+            if (e.target === searchModal) {
+                closeSearchModal();
+            }
+        });
+    }, 100);
+}
+
+// Close search modal
+function closeSearchModal() {
+    const searchModal = document.getElementById('searchResultsModal');
+    searchModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Custom scroll function to center recipe grid in viewport
 function scrollToSection(sectionId) {
-    const section = document.getElementById(sectionId);
+    const recipeGridSection = document.querySelector('.recipe-grid-section');
     const navbar = document.querySelector('.navbar');
     
-    if (section && navbar) {
+    if (recipeGridSection && navbar) {
         const navbarHeight = navbar.offsetHeight;
-        const sectionTop = section.offsetTop - navbarHeight - 30; // Extra 30px padding for better visibility
+        const viewportHeight = window.innerHeight;
+        
+        // Get the recipe grid section position and height
+        const gridTop = recipeGridSection.offsetTop;
+        const gridHeight = recipeGridSection.offsetHeight;
+        
+        // Calculate position to center the recipe grid in the viewport
+        const availableHeight = viewportHeight - navbarHeight;
+        const centerOffset = (availableHeight - Math.min(gridHeight, availableHeight * 0.8)) / 2;
+        const scrollPosition = gridTop - navbarHeight - centerOffset;
         
         window.scrollTo({
-            top: sectionTop,
+            top: Math.max(0, scrollPosition),
             behavior: 'smooth'
         });
     }
@@ -834,8 +885,6 @@ function setupEventListeners() {
         const query = searchInput.value.trim();
         if (query) {
             searchRecipes(query);
-        } else {
-            displayRecipes(recipes);
         }
     });
     
@@ -844,8 +893,6 @@ function setupEventListeners() {
             const query = searchInput.value.trim();
             if (query) {
                 searchRecipes(query);
-            } else {
-                displayRecipes(recipes);
             }
         }
     });
@@ -853,11 +900,26 @@ function setupEventListeners() {
     // Clear search when input is empty
     searchInput.addEventListener('input', (e) => {
         if (e.target.value === '') {
-            displayRecipes(recipes);
-            // Reset subtitle
-            const subtitle = document.querySelector('.section-subtitle');
-            if (subtitle) {
-                subtitle.textContent = 'All Recipes';
+            // Close search modal if open
+            const searchModal = document.getElementById('searchResultsModal');
+            if (searchModal && searchModal.style.display === 'block') {
+                closeSearchModal();
+            }
+        }
+    });
+    
+    // Setup search modal close button
+    const searchModalClose = document.getElementById('searchModalClose');
+    if (searchModalClose) {
+        searchModalClose.addEventListener('click', closeSearchModal);
+    }
+    
+    // Setup ESC key to close search modal
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const searchModal = document.getElementById('searchResultsModal');
+            if (searchModal && searchModal.style.display === 'block') {
+                closeSearchModal();
             }
         }
     });
@@ -994,5 +1056,7 @@ window.recipeApp = {
     searchRecipes,
     filterByCategory,
     scrollToSection,
+    showSearchResultsModal,
+    closeSearchModal,
     addRecipe
 };

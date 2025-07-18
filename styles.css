@@ -607,6 +607,158 @@ h2::after {
     animation: slideIn 0.3s ease;
 }
 
+/* Search Results Modal */
+.search-modal .search-modal-content {
+    background-color: white;
+    margin: 3% auto;
+    padding: 0;
+    border-radius: 20px;
+    width: 95%;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow: hidden;
+    position: relative;
+    animation: slideInUp 0.4s ease;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.search-modal-header {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 20px 20px 0 0;
+}
+
+.search-modal-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.search-close {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.search-close:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.search-modal-body {
+    padding: 2rem;
+    max-height: 70vh;
+    overflow-y: auto;
+    background: #f8f9fa;
+}
+
+.search-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Mobile optimized search modal */
+@media (max-width: 768px) {
+    .search-modal .search-modal-content {
+        width: 98%;
+        margin: 2% auto;
+        max-height: 95vh;
+        border-radius: 15px;
+    }
+    
+    .search-modal-header {
+        padding: 1rem 1.5rem;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .search-modal-header h3 {
+        font-size: 1.3rem;
+    }
+    
+    .search-modal-body {
+        padding: 1.5rem;
+        max-height: 75vh;
+    }
+    
+    .search-results-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+/* Samsung S24 Ultra specific optimizations */
+@media (max-width: 480px) and (min-height: 800px) {
+    .search-modal .search-modal-content {
+        width: 96%;
+        margin: 5% auto;
+        max-height: 90vh;
+    }
+    
+    .search-modal-body {
+        max-height: 70vh;
+        padding: 1rem;
+    }
+    
+    .search-results-grid {
+        gap: 0.8rem;
+    }
+    
+    /* Enhanced touch experience for recipe cards in modal */
+    .search-results-grid .recipe-card {
+        border-radius: 12px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .search-results-grid .recipe-card:active {
+        transform: scale(0.98);
+    }
+}
+
+/* Touch-friendly enhancements for search modal */
+@media (pointer: coarse) {
+    .search-close {
+        width: 40px;
+        height: 40px;
+        font-size: 1.3rem;
+    }
+    
+    .search-modal-body {
+        /* Enable smooth scrolling on touch devices */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    .search-results-grid .recipe-card {
+        /* Prevent text selection on touch */
+        -webkit-user-select: none;
+        user-select: none;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 .close {
     position: absolute;
     top: 15px;
@@ -1696,6 +1848,27 @@ html {
 /* Recipe grid section enhancements */
 .recipe-grid-section {
     transition: all 0.3s ease;
+    padding: 2rem 0;
+    border-radius: 15px;
+    position: relative;
+}
+
+.recipe-grid-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(231, 76, 60, 0.05) 0%, rgba(255, 255, 255, 0.1) 100%);
+    border-radius: 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.recipe-grid-section.highlighted::before {
+    opacity: 1;
 }
 
 .recipe-grid-section .section-subtitle {
@@ -1703,11 +1876,18 @@ html {
     color: #333;
     margin-bottom: 2rem;
     text-align: center;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    display: inline-block;
+    margin-left: 50%;
+    transform: translateX(-50%);
 }
 
 .recipe-grid-section .section-subtitle.search-results {
     color: #e74c3c;
+    background: rgba(231, 76, 60, 0.1);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
 }
 
 /* Smooth scroll offset for fixed navbar */
