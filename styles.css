@@ -861,6 +861,7 @@ h2::after {
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
     margin-top: 2rem;
+    padding: 0 1rem;
 }
 
 .ingredients h3,
@@ -870,8 +871,45 @@ h2::after {
     font-size: 1.5rem;
 }
 
+/* Enhanced ingredients section with curved ending */
+.ingredients {
+    position: relative;
+    padding-bottom: 3rem;
+    background: linear-gradient(180deg, transparent 0%, rgba(231, 76, 60, 0.02) 90%, transparent 100%);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.ingredients::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 40px;
+    background: linear-gradient(135deg, #e74c3c 0%, #ff6b6b 50%, #ffa500 100%);
+    border-radius: 0 0 60px 60px;
+    opacity: 0.15;
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.1);
+}
+
+.ingredients::before {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 20%;
+    right: 20%;
+    height: 25px;
+    background: linear-gradient(135deg, #e74c3c 0%, #ff6b6b 100%);
+    border-radius: 0 0 40px 40px;
+    opacity: 0.08;
+}
+
 .ingredients ul {
     list-style: none;
+    position: relative;
+    z-index: 2;
 }
 
 .ingredients li {
@@ -879,6 +917,11 @@ h2::after {
     border-bottom: 1px solid #eee;
     position: relative;
     padding-left: 1.5rem;
+}
+
+.ingredients li:last-child {
+    border-bottom: none;
+    margin-bottom: 1rem;
 }
 
 .ingredients li::before {
@@ -889,9 +932,46 @@ h2::after {
     font-weight: bold;
 }
 
+/* Enhanced instructions section with curved ending */
+.instructions {
+    position: relative;
+    padding-bottom: 3rem;
+    background: linear-gradient(180deg, transparent 0%, rgba(76, 175, 80, 0.02) 90%, transparent 100%);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.instructions::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 40px;
+    background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 50%, #81C784 100%);
+    border-radius: 0 0 60px 60px;
+    opacity: 0.15;
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.1);
+}
+
+.instructions::before {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 20%;
+    right: 20%;
+    height: 25px;
+    background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+    border-radius: 0 0 40px 40px;
+    opacity: 0.08;
+}
+
 .instructions ol {
     counter-reset: step-counter;
     list-style: none;
+    position: relative;
+    z-index: 2;
 }
 
 .instructions li {
@@ -899,6 +979,10 @@ h2::after {
     margin-bottom: 1rem;
     padding-left: 2rem;
     position: relative;
+}
+
+.instructions li:last-child {
+    margin-bottom: 1rem;
 }
 
 .instructions li::before {
@@ -916,6 +1000,62 @@ h2::after {
     justify-content: center;
     font-weight: bold;
     font-size: 0.9rem;
+}
+
+/* Curved ending animations and hover effects */
+.ingredients:hover::after {
+    opacity: 0.25;
+    transform: scaleY(1.1);
+    transition: all 0.3s ease;
+}
+
+.instructions:hover::after {
+    opacity: 0.25;
+    transform: scaleY(1.1);
+    transition: all 0.3s ease;
+}
+
+.ingredients::after,
+.instructions::after {
+    transition: all 0.3s ease;
+}
+
+.ingredients::before,
+.instructions::before {
+    transition: all 0.3s ease;
+}
+
+/* Subtle pulse animation for the curved endings */
+@keyframes curveGlow {
+    0%, 100% {
+        opacity: 0.15;
+        transform: scaleY(1);
+    }
+    50% {
+        opacity: 0.2;
+        transform: scaleY(1.05);
+    }
+}
+
+.ingredients::after {
+    animation: curveGlow 4s ease-in-out infinite;
+    animation-delay: 0s;
+}
+
+.instructions::after {
+    animation: curveGlow 4s ease-in-out infinite;
+    animation-delay: 2s;
+}
+
+/* Enhanced styling for better visual hierarchy */
+.ingredients h3 {
+    position: relative;
+    z-index: 3;
+}
+
+.instructions h3 {
+    position: relative;
+    z-index: 3;
 }
 
 /* Footer */
@@ -1435,6 +1575,30 @@ h2::after {
     .ingredients-instructions {
         grid-template-columns: 1fr;
         gap: 2rem;
+        padding: 0 0.5rem;
+    }
+
+    /* Mobile adjustments for curved endings */
+    .ingredients,
+    .instructions {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .ingredients::after,
+    .instructions::after {
+        left: 5%;
+        right: 5%;
+        height: 35px;
+        border-radius: 0 0 50px 50px;
+    }
+
+    .ingredients::before,
+    .instructions::before {
+        left: 15%;
+        right: 15%;
+        height: 20px;
+        border-radius: 0 0 30px 30px;
     }
 
     .modal-content {
