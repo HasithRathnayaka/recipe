@@ -531,6 +531,14 @@ h2::after {
 }
 
 /* About Section */
+.about {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+}
+
 .about-content {
     display: flex;
     align-items: center;
@@ -558,8 +566,9 @@ h2::after {
 }
 
 .features {
-    display: flex;
-    gap: 2rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
     margin-top: 2rem;
 }
 
@@ -569,6 +578,17 @@ h2::after {
     gap: 0.5rem;
     color: #e74c3c;
     font-weight: 500;
+    padding: 0.8rem;
+    background: rgba(231, 76, 60, 0.05);
+    border-radius: 8px;
+    border-left: 3px solid #e74c3c;
+    transition: all 0.3s ease;
+}
+
+.feature:hover {
+    background: rgba(231, 76, 60, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.15);
 }
 
 .feature i {

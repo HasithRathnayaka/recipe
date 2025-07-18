@@ -650,29 +650,37 @@ function closeSearchModal() {
     document.body.style.overflow = 'auto';
 }
 
-// Custom scroll function to center recipe grid in viewport
+// Custom scroll function to navigate to any section
 function scrollToSection(sectionId) {
-    const recipeGridSection = document.querySelector('.recipe-grid-section');
+    const targetSection = document.getElementById(sectionId);
     const navbar = document.querySelector('.navbar');
     
-    if (recipeGridSection && navbar) {
+    if (targetSection && navbar) {
         const navbarHeight = navbar.offsetHeight;
-        const viewportHeight = window.innerHeight;
+        const sectionTop = targetSection.offsetTop;
         
-        // Get the recipe grid section position and height
-        const gridTop = recipeGridSection.offsetTop;
-        const gridHeight = recipeGridSection.offsetHeight;
-        
-        // Calculate position to center the recipe grid in the viewport
-        const availableHeight = viewportHeight - navbarHeight;
-        const centerOffset = (availableHeight - Math.min(gridHeight, availableHeight * 0.8)) / 2;
-        const scrollPosition = gridTop - navbarHeight - centerOffset;
+        // Calculate scroll position with navbar offset
+        const scrollPosition = sectionTop - navbarHeight - 20; // 20px extra padding
         
         window.scrollTo({
             top: Math.max(0, scrollPosition),
             behavior: 'smooth'
         });
+        
+        // Update active navigation link
+        updateActiveNavLink(sectionId);
     }
+}
+
+// Update active navigation link
+function updateActiveNavLink(activeSectionId) {
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${activeSectionId}`) {
+            link.classList.add('active');
+        }
+    });
 }
 
 // Slideshow functionality
@@ -1086,6 +1094,7 @@ window.recipeApp = {
     searchRecipes,
     filterByCategory,
     scrollToSection,
+    updateActiveNavLink,
     showSearchResultsModal,
     closeSearchModal,
     addRecipe
