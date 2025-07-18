@@ -438,7 +438,7 @@ const categoryCards = document.querySelectorAll('.category-card');
 let currentSlide = 0;
 let slideInterval;
 let isAutoPlaying = true;
-let autoAdvanceSpeed = 3000; // 3 seconds for optimal auto-advance
+let autoAdvanceSpeed = 4000; // 4 seconds for optimal auto-advance
 const featuredRecipes = recipes.slice(0, 6); // Show more recipes in slideshow
 
 // Initialize the app
@@ -710,6 +710,7 @@ function initializeSlideshow() {
 function createSlide(recipe, index) {
     const slide = document.createElement('div');
     slide.className = `recipe-slide ${index === 0 ? 'active' : ''}`;
+    slide.style.cursor = 'pointer';
     
     const imageContent = recipe.image 
         ? `<img src="${recipe.image}" alt="${recipe.title}" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-utensils\\'></i>'">`
@@ -740,12 +741,14 @@ function createSlide(recipe, index) {
                 <div class="slide-tags">
                     ${recipe.tags.map(tag => `<span class="slide-tag">${tag}</span>`).join('')}
                 </div>
-                <button class="slide-button" onclick="showRecipeDetail(recipes[${recipe.id - 1}])">
-                    View Recipe
-                </button>
             </div>
         </div>
     `;
+    
+    // Make the entire slide clickable
+    slide.addEventListener('click', () => {
+        showRecipeDetail(recipes[recipe.id - 1]);
+    });
     
     return slide;
 }
