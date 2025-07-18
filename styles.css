@@ -828,14 +828,14 @@ h2::after {
     position: absolute;
     top: 15px;
     right: 15px;
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: bold;
     cursor: pointer;
     z-index: 1001;
     color: #666;
     background: white;
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -895,45 +895,16 @@ h2::after {
     font-size: 1.5rem;
 }
 
-/* Enhanced ingredients section with curved ending */
+/* Enhanced ingredients section */
 .ingredients {
-    position: relative;
-    padding-bottom: 3rem;
-    background: linear-gradient(180deg, transparent 0%, rgba(231, 76, 60, 0.02) 90%, transparent 100%);
+    background: #f8f9fa;
     border-radius: 15px;
     padding: 1.5rem;
     margin-bottom: 1rem;
 }
 
-.ingredients::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 10%;
-    right: 10%;
-    height: 40px;
-    background: linear-gradient(135deg, #e74c3c 0%, #ff6b6b 50%, #ffa500 100%);
-    border-radius: 0 0 60px 60px;
-    opacity: 0.15;
-    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.1);
-}
-
-.ingredients::before {
-    content: '';
-    position: absolute;
-    bottom: 5px;
-    left: 20%;
-    right: 20%;
-    height: 25px;
-    background: linear-gradient(135deg, #e74c3c 0%, #ff6b6b 100%);
-    border-radius: 0 0 40px 40px;
-    opacity: 0.08;
-}
-
 .ingredients ul {
     list-style: none;
-    position: relative;
-    z-index: 2;
 }
 
 .ingredients li {
@@ -945,7 +916,6 @@ h2::after {
 
 .ingredients li:last-child {
     border-bottom: none;
-    margin-bottom: 1rem;
 }
 
 .ingredients li::before {
@@ -956,46 +926,17 @@ h2::after {
     font-weight: bold;
 }
 
-/* Enhanced instructions section with curved ending */
+/* Enhanced instructions section */
 .instructions {
-    position: relative;
-    padding-bottom: 3rem;
-    background: linear-gradient(180deg, transparent 0%, rgba(76, 175, 80, 0.02) 90%, transparent 100%);
+    background: #f8f9fa;
     border-radius: 15px;
     padding: 1.5rem;
     margin-bottom: 1rem;
 }
 
-.instructions::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 10%;
-    right: 10%;
-    height: 40px;
-    background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 50%, #81C784 100%);
-    border-radius: 0 0 60px 60px;
-    opacity: 0.15;
-    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.1);
-}
-
-.instructions::before {
-    content: '';
-    position: absolute;
-    bottom: 5px;
-    left: 20%;
-    right: 20%;
-    height: 25px;
-    background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
-    border-radius: 0 0 40px 40px;
-    opacity: 0.08;
-}
-
 .instructions ol {
     counter-reset: step-counter;
     list-style: none;
-    position: relative;
-    z-index: 2;
 }
 
 .instructions li {
@@ -1003,10 +944,6 @@ h2::after {
     margin-bottom: 1rem;
     padding-left: 2rem;
     position: relative;
-}
-
-.instructions li:last-child {
-    margin-bottom: 1rem;
 }
 
 .instructions li::before {
@@ -1026,18 +963,7 @@ h2::after {
     font-size: 0.9rem;
 }
 
-/* Curved ending animations and hover effects */
-.ingredients:hover::after {
-    opacity: 0.25;
-    transform: scaleY(1.1);
-    transition: all 0.3s ease;
-}
 
-.instructions:hover::after {
-    opacity: 0.25;
-    transform: scaleY(1.1);
-    transition: all 0.3s ease;
-}
 
 .ingredients::after,
 .instructions::after {
@@ -1635,9 +1561,9 @@ h2::after {
     .close {
         top: 10px;
         right: 10px;
-        width: 35px;
-        height: 35px;
-        font-size: 1.8rem;
+        width: 28px;
+        height: 28px;
+        font-size: 1.4rem;
     }
 
     .recipe-detail {
